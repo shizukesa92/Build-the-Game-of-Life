@@ -30,10 +30,34 @@
 </head>
 
 <body>
-	<div id="main" class="container text-center">
-
+	<div id="header">
+		<h1>ReactJS Game of Life</h1>
 	</div>
-	<div id="footer" class="text-center"><b>Coded by Leonard Tye</b></div>
+	<div id="main" class="container">
+		<div id="top-bar">
+			<button type="button">Run</button><button type="button">Pause</button><button type="button">Clear</button>
+			<p>Generation: <span id="generation"></span></p>
+		</div>
+		<div id="board">
+			<div id="squares">
+				<div id="cell"></div>
+			</div>
+		</div>
+		<div id="middle-bar">
+			<div id="size" class="row">
+				<p>Board Size</p>
+				<button type="button">Size: 50 x 30</button><button type="button">Size: 70x50</button><button type="button">Size: 100x80</button>
+			</div>
+			<div id="speed" class="row">
+				<p>Sim speed</p>
+				<button type="button">Slow</button><button type="button">Medium</button><button type="button">Fast</button>
+			</div>
+		</div>
+		<div id="bottom-bar">
+			<p>Feel free to add cells while it's running. The cells in light red are younger, dark red are older. Enjoy!</p>
+		</div>
+	</div>
+	<div id="footer"><b>Coded by Leonard Tye</b></div>
 </body>
 
 </html>

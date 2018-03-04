@@ -1,0 +1,45 @@
+var board = [],
+	population = 0,
+	height = 100,
+	width = 80,
+	size = height * width;
+
+$(document).ready(() => {
+	$("#generation").text("0");
+	clearCells();
+	generateCells();
+});
+
+const clearCells = () => {
+	board = [];
+	for (let x = 0; x < size; x++) {
+		board[x] = {
+			id: x,
+			status: "cell dead"
+		};
+	}
+	population = 0;
+	$("#generation").text("0");
+};
+
+const generateCells = () => {
+	$("#squares").empty();
+
+	class Cells extends React.Component {
+		constructor(props) {
+			super(props);
+		}
+		render() {
+			return (<div>
+							{this.props.board.map((cell, i)=> {
+						return(<div className={cell.status} key={i} id={i}></div>);
+					})
+					}
+				</div>
+
+			);
+		}
+	}
+	ReactDOM.render(<Cells board={board} population={population}/>, document.getElementById("squares"));
+
+}

@@ -121,11 +121,11 @@ button {
         width: 72vw;
 }
 
-#cell {
+.cell {
         background-color: black;
         float: left;
         border-top: 0.1vh solid grey;
         border-left: 0.1vw solid grey;
-        height: 0.8vh;
-        width: 0.62vw;
+        height: 0.9vh;
+        width: 0.9vw;
 }

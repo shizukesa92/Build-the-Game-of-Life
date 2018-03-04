@@ -45,7 +45,29 @@ const generateCells = () => {
 }*/
 
 class Buttons extends React.Component {
+	changeSize = (event) => {
+		var height = 0,
+			width = 0;
+		switch (event.target.id) {
+			case "5030":
+				height = 45,
+					width = 27;
+				break;
+			case "7050":
+				height = 63,
+					width = 45;
+				break;
+			default:
+				height = 90,
+					width = 72;
+		}
+		this.props.change(height, width); //Need to fix this
+		this.props.regen();
+	}
 
+	render() {
+		return (<div><p>Board Size</p><button type="button" onClick = {this.changeSize} id = "5030">50 x 30</button><button type="button" onClick = {this.changeSize} id = "7050">70x50</button><button type="button" onClick = {this.changeSize} id = {10080}>100x80</button></div>)
+	}
 }
 
 class Cells extends React.Component {
@@ -70,11 +92,17 @@ class Cells extends React.Component {
 			board: board
 		})
 	}
+
+	changeSize = () => {
+		this.props.changeSize(height, width);
+	}
 	render() {
+		ReactDOM.render(<Buttons change = {this.changeSize} regen = {this.componentWillMount}/>, document.getElementById("size"));
+
 		return (<div>{this.state.board.map((cell, i)=> {
 						return(<div className={cell.status} key={i} id={i}></div>);
-					})
-				})</div>)
+		})
+		}</div>)
 
 
 
@@ -87,11 +115,17 @@ class Board extends React.Component {
 		super(props);
 		this.state = {
 			height: 100,
-			width: 80,
+			width: 80
 		}
 	}
 
 	changeSize = (height, width) => {
+		$("#squares").css("height", height + "vh");
+		$("#squares").css("width", width + "vw");
+		$("#board").css("height", height + 2 + "vh");
+		$("#board").css("width", width + 2 + "vw");
+
+
 		this.setState({
 			height: height,
 			width: width,
@@ -99,9 +133,8 @@ class Board extends React.Component {
 	}
 	render() {
 		const size = this.state.height * this.state.width;
-		//ReactDOM.render(<Buttons change = {changeSize}/>, document.getElementById("size"));
 		return (
-			<Cells size = {size} />
+			<Cells size = {size} change = {this.changeSize}/>
 		);
 	}
 

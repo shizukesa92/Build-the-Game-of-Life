@@ -1,4 +1,4 @@
-var board = [],
+/*var board = [],
 	population = 0,
 	height = 100,
 	width = 80,
@@ -42,4 +42,68 @@ const generateCells = () => {
 	}
 	ReactDOM.render(<Cells board={board} population={population}/>, document.getElementById("squares"));
 
+}*/
+
+class Buttons extends React.Component {
+
 }
+
+class Cells extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			board: [],
+		}
+	}
+
+	componentWillMount = () => {
+		var board = [];
+		for (let x = 0; x < this.props.size; x++) {
+			board[x] = {
+				id: x,
+				status: "cell dead"
+			};
+		}
+		$("#generation").text("0");
+
+		this.setState({
+			board: board
+		})
+	}
+	render() {
+		return (<div>{this.state.board.map((cell, i)=> {
+						return(<div className={cell.status} key={i} id={i}></div>);
+					})
+				})</div>)
+
+
+
+	}
+
+}
+
+class Board extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			height: 100,
+			width: 80,
+		}
+	}
+
+	changeSize = (height, width) => {
+		this.setState({
+			height: height,
+			width: width,
+		})
+	}
+	render() {
+		const size = this.state.height * this.state.width;
+		//ReactDOM.render(<Buttons change = {changeSize}/>, document.getElementById("size"));
+		return (
+			<Cells size = {size} />
+		);
+	}
+
+}
+ReactDOM.render(<Board />, document.getElementById("squares"));

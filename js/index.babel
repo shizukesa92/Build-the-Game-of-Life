@@ -13,7 +13,7 @@ if (cells.length == 7999) {
 }
 
 
-var edge = [0,columns-1,cells.length-columns,cells.length-1],
+var edge = [0,columns-1,cells.length-1-columns,cells.length-1], 
 surroundingTop = [],
 surroundingBottom =[],
 surroundingLeft =[],
@@ -36,10 +36,92 @@ surroundingRight.push(x);
 
 for (let x = 0;x<cells.length; x++){
 
-if(surroundingTop.indexOf(x) == -1 && surroundingBottom.indexOf(x) == -1 && surroundingLeft.indexOf(x) == -1 && surroundingRight.indexOf(x) == -1 ){
+if(surroundingTop.indexOf(x) == -1 && surroundingBottom.indexOf(x) == -1 && surroundingLeft.indexOf(x) == -1 && surroundingRight.indexOf(x) == -1 && edge.indexOf(x) == -1){
 normal.push(x);
 }
+
+
+for (let x = 0; x < surroundingTop.length; x++){
+var neighbours = [],
+alive =0;
+
+switch(cells[x].id) {
+	case surroundingTop.indexOf(x)>0:
+neighbours.push(cells[surroundingTop[x]-1].id,cells[surroundingTop[x]+1].id,cells[surroundingTop[x]+columns].id,cells[surroundingTop[x]+columns-1].id,cells[surroundingTop[x]+columns+1].id);
+
+        break;
+	case surroundingBottom.indexOf(x)>0:
+neighbours.push(cells[surroundingBottom[x]-1].id,cells[surroudingBottom[x]+1].id,cells[surroudingBottom[x]-columns].id,cells[surroudingBottom[x]-columns+1].id,cells[surroudingBottom[x]-columns-1].id);
+
+        break;
+	case surroundingLeft.indexOf(x)>0:
+neighbours.push(cells[surroudingLeft[x]+1].id,cells[surroundingLeft[x]+columns].id,cells[surroundingLeft[x]-columns].id,cells[surroundingLeft[x]-columns+1].id,cells[surroundingLeft[x]+columns+1].id);
+
+        break;
+	case surroundingRight.indexOf(x)>0:
+neighbours.push(cells[surroudingRight[x]-1].id,cells[surroundingRight[x]+columns].id,cells[surroundingRight[x]-columns].id,cells[surroundingRight[x]+columns-1].id,cells[surroundingRight[x]-columns-1].id);
+
+        break;
+	case normal.indexOf(x)>0:
+neighbours.push(cells[normal-1].id,cells[normal+1].id,cells[normal+columns].id,cells[normal-columns].id,cells[normal+columns-1].id,cells[normal-columns+1].id,cells[normal+columns+1].id,cells[normal-columns-1].id);
+
+		break;
+	case 1:
+neighbours.push(cells[1].id,cells[columns].id,cells[columns+1].id);
+
+		break;
+			case columns-1-1:
+        code block
+        break;
+	case surroundingRight.indexOf(x)>0:
+neighbours.push(cells[columns-1-1].id,cells[columns-1+columns].id,cells[columns-1+columns-1].id);
+
+        break;
+	case cells.length-columns+1+1:
+neighbours.push(cells[cells.length-columns+1+1].id,cells[cells.length-columns+1-columns].id,cells[cells.length-columns+1-columns+1].id);
+
+		break;
+	case cells.length-1-1:
+neighbours.push(cells[cells.length-1-1].id,cells[cells.length-1-columns].id,cells[cells.length-1-columns-1].id);
+
+		break;
 }
+
+for (let y =0; y< neighbours.length; y++){
+if (cells[neighbours[y]].status == "alive"){
+alive++;
+}
+if (cells[surroundingTop[x]].status == "alive" ){
+	if (alive < 2 or alive >3){
+	cells[surroundingTop[x]].status == "dead"
+	
+	}
+	}
+} else {
+if (alive == 3){
+cells[surroundingTop[x]].status == "alive";
+}
+
+}
+
+
+
+}
+
+
+}
+
+
+cells[surroundingBottom[x]-1].id,cells[surroudingBottom[x]+1].id,cells[surroudingBottom[x]-columns].id,cells[surroudingBottom[x]-columns+1].id,cells[surroudingBottom[x]-columns-1].id
+cells[surroundingTop[x]-1].id,cells[surroundingTop[x]+1].id,cells[surroundingTop[x]+columns].id,cells[surroundingTop[x]+columns-1].id,cells[surroundingTop[x]+columns+1].id
+cells[surroudingLeft[x]+1].id,cells[surroundingLeft[x]+columns].id,cells[surroundingLeft[x]-columns].id,cells[surroundingLeft[x]-columns+1].id,cells[surroundingLeft[x]+columns+1].id
+cells[surroudingRight[x]-1].id,cells[surroundingRight[x]+columns].id,cells[surroundingRight[x]-columns].id,cells[surroundingRight[x]+columns-1].id,cells[surroundingRight[x]-columns-1].id
+cells[1].id,cells[columns].id,cells[columns+1].id
+cells[columns-1-1].id,cells[columns-1+columns].id,cells[columns-1+columns-1].id
+cells[cells.length-columns+1+1].id,cells[cells.length-columns+1-columns].id,cells[cells.length-columns+1-columns+1].id
+cells[cells.length-1-1].id,cells[cells.length-1-columns].id,cells[cells.length-1-columns-1].id
+
+
 		*/
 
 class Cells extends React.Component {

@@ -1,48 +1,46 @@
-/*var board = [],
-	population = 0,
-	height = 100,
-	width = 80,
-	size = height * width;
+/*var cells = document.getElementsByClassName("cell"),
+  columns = 0;
 
-$(document).ready(() => {
-	$("#generation").text("0");
-	clearCells();
-	generateCells();
-});
+if (cells.length == 7999) {
+	gameBig();
+	columns = 80;
+} else if (cells.length == 3499) {
+	gameMedium();
+	columns = 50;
+} else {
+	gameSmall();
+	columns = 30;
+}
 
-const clearCells = () => {
-	board = [];
-	for (let x = 0; x < size; x++) {
-		board[x] = {
-			id: x,
-			status: "cell dead"
-		};
-	}
-	population = 0;
-	$("#generation").text("0");
-};
 
-const generateCells = () => {
-	$("#squares").empty();
+var edge = [0,columns-1,cells.length-columns,cells.length-1],
+surroundingTop = [],
+surroundingBottom =[],
+surroundingLeft =[],
+surroundingRight =[];
 
-	class Cells extends React.Component {
-		constructor(props) {
-			super(props);
-		}
-		render() {
-			return (<div>
-							{this.props.board.map((cell, i)=> {
-						return(<div className={cell.status} key={i} id={i}></div>);
-					})
-					}
-				</div>
+for (let x = 1; x<columns-1; x++) {
+surroundingTop.push(x);
+}
 
-			);
-		}
-	}
-	ReactDOM.render(<Cells board={board} population={population}/>, document.getElementById("squares"));
+for (let x = cells.length-columns; x<cells.length-1; x++) {
+surroundingBottom.push(x);
+}
 
-}*/
+for (let x = columns; x<=cells.length-columns*2; x+columns) {
+surroundingLeft.push(x);
+}
+for (let x = columns*2-1; x<=cells.length-columns-1; x+columns) {
+surroundingRight.push(x);
+}
+
+for (let x = 0;x<cells.length; x++){
+
+if(surroundingTop.indexOf(x) == -1 && surroundingBottom.indexOf(x) == -1 && surroundingLeft.indexOf(x) == -1 && surroundingRight.indexOf(x) == -1 ){
+normal.push(x);
+}
+}
+		*/
 
 class Cells extends React.Component {
 	constructor(props) {
@@ -63,7 +61,7 @@ class Cells extends React.Component {
 	}
 
 	render() {
-		return (<div className={"cell " + this.state.life} key={this.props.i} id={this.props.i} onClick = {this.setAlive}></div>)
+		return (<div className={"cell " + this.state.life} key={this.props.key} id={this.props.id} onClick = {this.setAlive}></div>)
 	}
 
 }

@@ -47,22 +47,26 @@ const generateCells = () => {
 class Buttons extends React.Component {
 	changeSize = (event) => {
 		var height = 0,
-			width = 0;
+			width = 0,
+			size = 0;
 		switch (event.target.id) {
 			case "5030":
-				height = 45,
-					width = 27;
+				height = 50,
+					width = 30,
+					size = 1500;
 				break;
 			case "7050":
-				height = 63,
-					width = 45;
+				height = 70,
+					width = 50,
+					size = 3500;
 				break;
 			default:
-				height = 90,
-					width = 72;
+				height = 100,
+					width = 80,
+					size = 8000;
 		}
-		this.props.change(height, width); //Need to fix this
-		this.props.regen();
+
+		this.props.change(height, width, size);
 	}
 
 	render() {
@@ -70,17 +74,21 @@ class Buttons extends React.Component {
 	}
 }
 
-class Cells extends React.Component {
+class Board extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			board: [],
+			height: 100,
+			width: 80,
+			size: 8000,
+			board: []
 		}
 	}
 
+
 	componentWillMount = () => {
 		var board = [];
-		for (let x = 0; x < this.props.size; x++) {
+		for (let x = 0; x < this.state.size; x++) {
 			board[x] = {
 				id: x,
 				status: "cell dead"
@@ -93,49 +101,34 @@ class Cells extends React.Component {
 		})
 	}
 
-	changeSize = () => {
-		this.props.changeSize(height, width);
-	}
-	render() {
-		ReactDOM.render(<Buttons change = {this.changeSize} regen = {this.componentWillMount}/>, document.getElementById("size"));
+	changeSize = (height, width, size) => {
+		$("#squares").css("height", height * 0.9 + "vh");
+		$("#squares").css("width", width * 0.9 + "vw");
+		$("#board").css("height", height * 0.9 + 2 + "vh");
+		$("#board").css("width", width * 0.9 + 2 + "vw");
 
-		return (<div>{this.state.board.map((cell, i)=> {
-						return(<div className={cell.status} key={i} id={i}></div>);
-		})
-		}</div>)
-
-
-
-	}
-
-}
-
-class Board extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			height: 100,
-			width: 80
+		var board = [];
+		for (let x = 0; x < size; x++) {
+			board[x] = {
+				id: x,
+				status: "cell dead"
+			};
 		}
-	}
-
-	changeSize = (height, width) => {
-		$("#squares").css("height", height + "vh");
-		$("#squares").css("width", width + "vw");
-		$("#board").css("height", height + 2 + "vh");
-		$("#board").css("width", width + 2 + "vw");
-
-
+		$("#generation").text("0");
 		this.setState({
 			height: height,
 			width: width,
+			size: size,
+			board: board
 		})
 	}
 	render() {
-		const size = this.state.height * this.state.width;
+		ReactDOM.render(<Buttons change = {this.changeSize}/>, document.getElementById("size"));
 		return (
-			<Cells size = {size} change = {this.changeSize}/>
-		);
+			<div>{this.state.board.map((cell, i)=> {
+						return(<div className={cell.status} key={i} id={i}></div>);
+		})
+		}</div>);
 	}
 
 }

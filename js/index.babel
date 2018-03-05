@@ -44,6 +44,30 @@ const generateCells = () => {
 
 }*/
 
+class Cells extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			life: "dead"
+		}
+	}
+
+	setAlive = () => {
+		this.state.life == "dead" ?
+			this.setState({
+				life: "alive"
+			}) :
+			this.setState({
+				life: "dead"
+			})
+	}
+
+	render() {
+		return (<div className={"cell " + this.state.life} key={this.props.i} id={this.props.i} onClick = {this.setAlive}></div>)
+	}
+
+}
+
 class Buttons extends React.Component {
 	changeSize = (event) => {
 		var height = 0,
@@ -87,11 +111,11 @@ class Board extends React.Component {
 
 
 	componentWillMount = () => {
+
 		var board = [];
 		for (let x = 0; x < this.state.size; x++) {
 			board[x] = {
 				id: x,
-				status: "cell dead"
 			};
 		}
 		$("#generation").text("0");
@@ -126,7 +150,7 @@ class Board extends React.Component {
 		ReactDOM.render(<Buttons change = {this.changeSize}/>, document.getElementById("size"));
 		return (
 			<div>{this.state.board.map((cell, i)=> {
-						return(<div className={cell.status} key={i} id={i}></div>);
+					return(<Cells id = {i} key = {i}/>);
 		})
 		}</div>);
 	}

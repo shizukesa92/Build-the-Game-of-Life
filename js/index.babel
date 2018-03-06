@@ -1,7 +1,8 @@
 class Game extends React.Component {
 	living = (id, cells) => {
-
+		console.log(cells[0].status);
 		var columns = 0,
+			count = 0,
 			border = 0;
 
 		if (cells.length == 8000) {
@@ -17,10 +18,10 @@ class Game extends React.Component {
 			if (board[id + 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width].status == "alive") {
+			if (board[id + columns].status == "alive") {
 				count++;
 			}
-			if (board[id + width + 1].status == "alive") {
+			if (board[id + columns + 1].status == "alive") {
 				count++;
 			}
 
@@ -31,10 +32,10 @@ class Game extends React.Component {
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
-			if (board[id - width].status == "alive") {
+			if (board[id - columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width - 1].status == "alive") {
+			if (board[id - columns - 1].status == "alive") {
 				count++;
 			}
 
@@ -45,10 +46,10 @@ class Game extends React.Component {
 			if (board[id + 1].status == "alive") {
 				count++;
 			}
-			if (board[id - width].status == "alive") {
+			if (board[id - columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width + 1].status == "alive") {
+			if (board[id - columns + 1].status == "alive") {
 				count++;
 			}
 
@@ -59,10 +60,10 @@ class Game extends React.Component {
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width].status == "alive") {
+			if (board[id + columns].status == "alive") {
 				count++;
 			}
-			if (board[id + width - 1].status == "alive") {
+			if (board[id + columns - 1].status == "alive") {
 				count++;
 			}
 
@@ -78,13 +79,13 @@ class Game extends React.Component {
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width].status == "alive") {
+			if (board[id + columns].status == "alive") {
 				count++;
 			}
-			if (board[id + width + 1].status == "alive") {
+			if (board[id + columns + 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width - 1].status == "alive") {
+			if (board[id + columns - 1].status == "alive") {
 				count++;
 			}
 
@@ -99,13 +100,13 @@ class Game extends React.Component {
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
-			if (board[id - width].status == "alive") {
+			if (board[id - columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width + 1].status == "alive") {
+			if (board[id - columns + 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width - 1].status == "alive") {
+			if (board[id + columns - 1].status == "alive") {
 				count++;
 			}
 
@@ -117,16 +118,16 @@ class Game extends React.Component {
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width].status == "alive") {
+			if (board[id + columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width].status == "alive") {
+			if (board[id - columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width - 1].status == "alive") {
+			if (board[id - columns - 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width - 1].status == "alive") {
+			if (board[id + columns - 1].status == "alive") {
 				count++;
 			}
 
@@ -138,16 +139,16 @@ class Game extends React.Component {
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width].status == "alive") {
+			if (board[id + columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width].status == "alive") {
+			if (board[id - columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width - 1].status == "alive") {
+			if (board[id - columns - 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width - 1].status == "alive") {
+			if (board[id + columns - 1].status == "alive") {
 				count++;
 			}
 
@@ -162,42 +163,41 @@ class Game extends React.Component {
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width].status == "alive") {
+			if (board[id + columns].status == "alive") {
 				count++;
 			}
-			if (board[id + width + 1].status == "alive") {
+			if (board[id + columns + 1].status == "alive") {
 				count++;
 			}
-			if (board[id + width - 1].status == "alive") {
+			if (board[id + columns - 1].status == "alive") {
 				count++;
 			}
-			if (board[id - width].status == "alive") {
+			if (board[id - columns].status == "alive") {
 				count++;
 			}
-			if (board[id - width + 1].status == "alive") {
+			if (board[id - columns + 1].status == "alive") {
 				count++;
 			}
-			if (board[id - width - 1].status == "alive") {
+			if (board[id - columns - 1].status == "alive") {
 				count++;
 			}
 
 		}
-
 		return count;
 	}
 
 	game = () => {
-		for (let x = 0; x < cells.length; x++) {
-			count(0, )
+		console.log(this.props.board);
+		for (let x = 0; x < this.props.board.length; x++) {
+
+			const count = this.living(x, this.props.board);
 			if (cells[x].status == "dead" && count == 3) {
-				cells[x].status == "alive";
+				cells[x].status == "living";
 			}
 			if (cells[x].status == "alive") {
 				if (count < 2 || count > 3) {
-					cells[x].status == "dead"
+					cells[x].status == "dead";
 
-				} else if (count == 3) {
-					cells[x].status == "alive";
 				}
 			}
 		}
@@ -205,7 +205,7 @@ class Game extends React.Component {
 	}
 
 	render() {
-		return (<div><button type="button" id="run">Run</button><button type="button" id="pause">Pause</button><button type="button" id="clear">Clear</button><p>Generation: <span id="generation"></span></p></div>);
+		return (<div><button type="button" id="run" onClick = {this.game}>Run</button><button type="button" id="pause">Pause</button><button type="button" id="clear">Clear</button><p>Generation: <span id="generation"></span></p></div>);
 	}
 
 }
@@ -284,6 +284,7 @@ class Board extends React.Component {
 		for (let x = 0; x < this.state.size; x++) {
 			board[x] = {
 				id: x,
+				status: "dead"
 			};
 		}
 		$("#generation").text("0");
@@ -303,7 +304,7 @@ class Board extends React.Component {
 		for (let x = 0; x < size; x++) {
 			board[x] = {
 				id: x,
-				status: "cell dead"
+				status: "dead"
 			};
 		}
 		$("#generation").text("0");
@@ -318,7 +319,7 @@ class Board extends React.Component {
 		ReactDOM.render(<Buttons change = {this.changeSize}/>, document.getElementById("size"));
 		return (
 			<div>{this.state.board.map((cell, i)=> {
-					return(<Cells id = {i} board = {board}/>);
+					return(<Cells id = {i} board = {this.state.board}/>);
 		})
 		}</div>);
 	}

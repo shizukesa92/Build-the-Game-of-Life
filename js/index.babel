@@ -1,128 +1,215 @@
-/*var cells = document.getElementsByClassName("cell"),
-  columns = 0;
+class Game extends React.Component {
+	living = (id, cells) => {
 
-if (cells.length == 7999) {
-	gameBig();
-	columns = 80;
-} else if (cells.length == 3499) {
-	gameMedium();
-	columns = 50;
-} else {
-	gameSmall();
-	columns = 30;
-}
+		var columns = 0,
+			border = 0;
+
+		if (cells.length == 8000) {
+			columns = 80;
+		} else if (cells.length == 8000) {
+			columns = 50;
+		} else {
+			columns = 30;
+		}
+
+		if (id == 0) {
+			border = 1;
+			if (board[id + 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width].status == "alive") {
+				count++;
+			}
+			if (board[id + width + 1].status == "alive") {
+				count++;
+			}
+
+		}
+
+		if (id == cells.length - 1) {
+			border = 1;
+			if (board[id - 1].status == "alive") {
+				count++;
+			}
+			if (board[id - width].status == "alive") {
+				count++;
+			}
+			if (board[id - width - 1].status == "alive") {
+				count++;
+			}
+
+		}
+
+		if (id == cells.length - columns) {
+			border = 1;
+			if (board[id + 1].status == "alive") {
+				count++;
+			}
+			if (board[id - width].status == "alive") {
+				count++;
+			}
+			if (board[id - width + 1].status == "alive") {
+				count++;
+			}
+
+		}
+
+		if (id == columns - 1) {
+			border = 1;
+			if (board[id - 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width].status == "alive") {
+				count++;
+			}
+			if (board[id + width - 1].status == "alive") {
+				count++;
+			}
+
+		}
 
 
-var edge = [0,columns-1,cells.length-1-columns,cells.length-1], 
-surroundingTop = [],
-surroundingBottom =[],
-surroundingLeft =[],
-surroundingRight =[];
+		//Top border
+		if (id >= 0 && id <= (columns - 1)) {
+			border = 1;
+			if (board[id + 1].status == "alive") {
+				count++;
+			}
+			if (board[id - 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width].status == "alive") {
+				count++;
+			}
+			if (board[id + width + 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width - 1].status == "alive") {
+				count++;
+			}
 
-for (let x = 1; x<columns-1; x++) {
-surroundingTop.push(x);
-}
+		}
 
-for (let x = cells.length-columns; x<cells.length-1; x++) {
-surroundingBottom.push(x);
-}
+		//Bottom border
+		if (id >= (cells.length - columns) && id <= (cells.length - 1)) {
+			border = 1;
+			if (board[id + 1].status == "alive") {
+				count++;
+			}
+			if (board[id - 1].status == "alive") {
+				count++;
+			}
+			if (board[id - width].status == "alive") {
+				count++;
+			}
+			if (board[id - width + 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width - 1].status == "alive") {
+				count++;
+			}
 
-for (let x = columns; x<=cells.length-columns*2; x+columns) {
-surroundingLeft.push(x);
-}
-for (let x = columns*2-1; x<=cells.length-columns-1; x+columns) {
-surroundingRight.push(x);
-}
+		}
 
-for (let x = 0;x<cells.length; x++){
+		//Right border
+		if ((id + 1) % columns == 0) {
+			border = 1;
+			if (board[id - 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width].status == "alive") {
+				count++;
+			}
+			if (board[id - width].status == "alive") {
+				count++;
+			}
+			if (board[id - width - 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width - 1].status == "alive") {
+				count++;
+			}
 
-if(surroundingTop.indexOf(x) == -1 && surroundingBottom.indexOf(x) == -1 && surroundingLeft.indexOf(x) == -1 && surroundingRight.indexOf(x) == -1 && edge.indexOf(x) == -1){
-normal.push(x);
-}
+		}
 
+		//Left border
+		if (id % columns == 0 || id == 0) {
+			border = 1;
+			if (board[id - 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width].status == "alive") {
+				count++;
+			}
+			if (board[id - width].status == "alive") {
+				count++;
+			}
+			if (board[id - width - 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width - 1].status == "alive") {
+				count++;
+			}
 
-for (let x = 0; x < surroundingTop.length; x++){
-var neighbours = [],
-alive =0;
+		}
 
-switch(cells[x].id) {
-	case surroundingTop.indexOf(x)>0:
-neighbours.push(cells[surroundingTop[x]-1].id,cells[surroundingTop[x]+1].id,cells[surroundingTop[x]+columns].id,cells[surroundingTop[x]+columns-1].id,cells[surroundingTop[x]+columns+1].id);
+		//Normal
+		if (border == 0) {
 
-        break;
-	case surroundingBottom.indexOf(x)>0:
-neighbours.push(cells[surroundingBottom[x]-1].id,cells[surroudingBottom[x]+1].id,cells[surroudingBottom[x]-columns].id,cells[surroudingBottom[x]-columns+1].id,cells[surroudingBottom[x]-columns-1].id);
+			if (board[id + 1].status == "alive") {
+				count++;
+			}
+			if (board[id - 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width].status == "alive") {
+				count++;
+			}
+			if (board[id + width + 1].status == "alive") {
+				count++;
+			}
+			if (board[id + width - 1].status == "alive") {
+				count++;
+			}
+			if (board[id - width].status == "alive") {
+				count++;
+			}
+			if (board[id - width + 1].status == "alive") {
+				count++;
+			}
+			if (board[id - width - 1].status == "alive") {
+				count++;
+			}
 
-        break;
-	case surroundingLeft.indexOf(x)>0:
-neighbours.push(cells[surroudingLeft[x]+1].id,cells[surroundingLeft[x]+columns].id,cells[surroundingLeft[x]-columns].id,cells[surroundingLeft[x]-columns+1].id,cells[surroundingLeft[x]+columns+1].id);
+		}
 
-        break;
-	case surroundingRight.indexOf(x)>0:
-neighbours.push(cells[surroudingRight[x]-1].id,cells[surroundingRight[x]+columns].id,cells[surroundingRight[x]-columns].id,cells[surroundingRight[x]+columns-1].id,cells[surroundingRight[x]-columns-1].id);
-
-        break;
-	case normal.indexOf(x)>0:
-neighbours.push(cells[normal-1].id,cells[normal+1].id,cells[normal+columns].id,cells[normal-columns].id,cells[normal+columns-1].id,cells[normal-columns+1].id,cells[normal+columns+1].id,cells[normal-columns-1].id);
-
-		break;
-	case 1:
-neighbours.push(cells[1].id,cells[columns].id,cells[columns+1].id);
-
-		break;
-			case columns-1-1:
-        code block
-        break;
-	case surroundingRight.indexOf(x)>0:
-neighbours.push(cells[columns-1-1].id,cells[columns-1+columns].id,cells[columns-1+columns-1].id);
-
-        break;
-	case cells.length-columns+1+1:
-neighbours.push(cells[cells.length-columns+1+1].id,cells[cells.length-columns+1-columns].id,cells[cells.length-columns+1-columns+1].id);
-
-		break;
-	case cells.length-1-1:
-neighbours.push(cells[cells.length-1-1].id,cells[cells.length-1-columns].id,cells[cells.length-1-columns-1].id);
-
-		break;
-}
-
-for (let y =0; y< neighbours.length; y++){
-if (cells[neighbours[y]].status == "alive"){
-alive++;
-}
-if (cells[surroundingTop[x]].status == "alive" ){
-	if (alive < 2 or alive >3){
-	cells[surroundingTop[x]].status == "dead"
-	
+		return count;
 	}
+
+	game = () => {
+		for (let x = 0; x < cells.length; x++) {
+			count(0, )
+			if (cells[x].status == "dead" && count == 3) {
+				cells[x].status == "alive";
+			}
+			if (cells[x].status == "alive") {
+				if (count < 2 || count > 3) {
+					cells[x].status == "dead"
+
+				} else if (count == 3) {
+					cells[x].status == "alive";
+				}
+			}
+		}
+
 	}
-} else {
-if (alive == 3){
-cells[surroundingTop[x]].status == "alive";
-}
+
+	render() {
+		return (<div><button type="button" id="run">Run</button><button type="button" id="pause">Pause</button><button type="button" id="clear">Clear</button><p>Generation: <span id="generation"></span></p></div>);
+	}
 
 }
 
-
-
-}
-
-
-}
-
-
-cells[surroundingBottom[x]-1].id,cells[surroudingBottom[x]+1].id,cells[surroudingBottom[x]-columns].id,cells[surroudingBottom[x]-columns+1].id,cells[surroudingBottom[x]-columns-1].id
-cells[surroundingTop[x]-1].id,cells[surroundingTop[x]+1].id,cells[surroundingTop[x]+columns].id,cells[surroundingTop[x]+columns-1].id,cells[surroundingTop[x]+columns+1].id
-cells[surroudingLeft[x]+1].id,cells[surroundingLeft[x]+columns].id,cells[surroundingLeft[x]-columns].id,cells[surroundingLeft[x]-columns+1].id,cells[surroundingLeft[x]+columns+1].id
-cells[surroudingRight[x]-1].id,cells[surroundingRight[x]+columns].id,cells[surroundingRight[x]-columns].id,cells[surroundingRight[x]+columns-1].id,cells[surroundingRight[x]-columns-1].id
-cells[1].id,cells[columns].id,cells[columns+1].id
-cells[columns-1-1].id,cells[columns-1+columns].id,cells[columns-1+columns-1].id
-cells[cells.length-columns+1+1].id,cells[cells.length-columns+1-columns].id,cells[cells.length-columns+1-columns+1].id
-cells[cells.length-1-1].id,cells[cells.length-1-columns].id,cells[cells.length-1-columns-1].id
-
-
-		*/
 
 class Cells extends React.Component {
 	constructor(props) {
@@ -143,7 +230,8 @@ class Cells extends React.Component {
 	}
 
 	render() {
-		return (<div className={"cell " + this.state.life} key={this.props.key} id={this.props.id} onClick = {this.setAlive}></div>)
+		ReactDOM.render(<Game toggle = {this.setAlive} board = {this.props.board}/>, document.getElementById("top-bar"));
+		return (<div className={"cell " + this.state.life} id={this.props.id} onClick = {this.setAlive}></div>)
 	}
 
 }
@@ -230,7 +318,7 @@ class Board extends React.Component {
 		ReactDOM.render(<Buttons change = {this.changeSize}/>, document.getElementById("size"));
 		return (
 			<div>{this.state.board.map((cell, i)=> {
-					return(<Cells id = {i} key = {i}/>);
+					return(<Cells id = {i} board = {board}/>);
 		})
 		}</div>);
 	}

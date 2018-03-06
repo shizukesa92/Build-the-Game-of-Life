@@ -100,7 +100,7 @@ button {
         float: right;
 }
 
-#middle-bar button:focus {
+button:focus {
         background-color: white;
         color: black;
 }

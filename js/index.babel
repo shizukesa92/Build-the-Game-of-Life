@@ -244,7 +244,19 @@ class Game extends React.Component {
 				clearInterval(controller);
 			}
 		}
-		return (<div><button type="button" id="run" onClick = {play}>Run</button><button type="button" id="pause" onClick = {pause}>Pause</button><button type="button" id="clear">Clear</button><p>Generation: <span id="generation"></span></p></div>);
+		const stop = () => {
+			running = 0;
+			clearInterval(controller);
+			$("#generation").html("0");
+
+			for (let x = 0; x < board.length; x++) {
+				board[x].status = "dead";
+				document.getElementById(x).className = "cell " + "dead";
+
+
+			}
+		}
+		return (<div><button type="button" id="run" onClick = {play}>Run</button><button type="button" id="pause" onClick = {pause}>Pause</button><button type="button" id="clear" onClick = {stop}>Clear</button><p>Generation: <span id="generation"></span></p></div>);
 	}
 }
 

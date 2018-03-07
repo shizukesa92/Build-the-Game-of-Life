@@ -1,13 +1,14 @@
+var board = [];
+
 class Game extends React.Component {
-	living = (id, cells) => {
-		console.log(cells[0].status);
+	living = (id) => {
 		var columns = 0,
 			count = 0,
 			border = 0;
 
-		if (cells.length == 8000) {
+		if (board.length == 8000) {
 			columns = 80;
-		} else if (cells.length == 8000) {
+		} else if (board.length == 8000) {
 			columns = 50;
 		} else {
 			columns = 30;
@@ -24,10 +25,10 @@ class Game extends React.Component {
 			if (board[id + columns + 1].status == "alive") {
 				count++;
 			}
-
+			return count;
 		}
 
-		if (id == cells.length - 1) {
+		if (id == board.length - 1) {
 			border = 1;
 			if (board[id - 1].status == "alive") {
 				count++;
@@ -39,9 +40,10 @@ class Game extends React.Component {
 				count++;
 			}
 
+			return count;
 		}
 
-		if (id == cells.length - columns) {
+		if (id == board.length - columns) {
 			border = 1;
 			if (board[id + 1].status == "alive") {
 				count++;
@@ -53,6 +55,7 @@ class Game extends React.Component {
 				count++;
 			}
 
+			return count;
 		}
 
 		if (id == columns - 1) {
@@ -67,6 +70,7 @@ class Game extends React.Component {
 				count++;
 			}
 
+			return count;
 		}
 
 
@@ -89,10 +93,11 @@ class Game extends React.Component {
 				count++;
 			}
 
+			return count;
 		}
 
 		//Bottom border
-		if (id >= (cells.length - columns) && id <= (cells.length - 1)) {
+		if (id >= (board.length - columns) && id <= (board.length - 1)) {
 			border = 1;
 			if (board[id + 1].status == "alive") {
 				count++;
@@ -106,10 +111,11 @@ class Game extends React.Component {
 			if (board[id - columns + 1].status == "alive") {
 				count++;
 			}
-			if (board[id + columns - 1].status == "alive") {
+			if (board[id - columns - 1].status == "alive") {
 				count++;
 			}
 
+			return count;
 		}
 
 		//Right border
@@ -131,11 +137,13 @@ class Game extends React.Component {
 				count++;
 			}
 
+			return count;
 		}
 
 		//Left border
-		if (id % columns == 0 || id == 0) {
+		if (id % columns == 0) {
 			border = 1;
+
 			if (board[id - 1].status == "alive") {
 				count++;
 			}
@@ -145,13 +153,14 @@ class Game extends React.Component {
 			if (board[id - columns].status == "alive") {
 				count++;
 			}
-			if (board[id - columns - 1].status == "alive") {
+			if (board[id - columns + 1].status == "alive") {
 				count++;
 			}
-			if (board[id + columns - 1].status == "alive") {
+			if (board[id + columns + 1].status == "alive") {
 				count++;
 			}
 
+			return count;
 		}
 
 		//Normal
@@ -182,22 +191,24 @@ class Game extends React.Component {
 				count++;
 			}
 
+			return count;
 		}
-		return count;
 	}
 
 	game = () => {
-		console.log(this.props.board);
-		for (let x = 0; x < this.props.board.length; x++) {
-
-			const count = this.living(x, this.props.board);
-			if (cells[x].status == "dead" && count == 3) {
-				cells[x].status == "living";
+		for (let x = 0; x < board.length; x++) {
+			const count = this.living(x);
+			if (board[x].status == "dead" && count == 3) {
+				board[x].status = "alive";
+				document.getElementById(x).className = "cell " + "alive";
 			}
-			if (cells[x].status == "alive") {
+			if (board[x].status == "alive") {
 				if (count < 2 || count > 3) {
-					cells[x].status == "dead";
-
+					board[x].status = "dead";
+					document.getElementById(x).className = "cell " + "dead";
+				} else if (count == 3) {
+					board[x].status = "alive";
+					document.getElementById(x).className = "cell " + "alive";
 				}
 			}
 		}
@@ -219,18 +230,22 @@ class Cells extends React.Component {
 		}
 	}
 
-	setAlive = () => {
+
+
+	setAlive = (event) => {
+		const id = event.target.id;
 		this.state.life == "dead" ?
-			this.setState({
+			(this.setState({
 				life: "alive"
-			}) :
-			this.setState({
+			}), board[id].status = "alive") :
+			(this.setState({
 				life: "dead"
-			})
+			}), board[id].status = "dead")
+
 	}
 
 	render() {
-		ReactDOM.render(<Game toggle = {this.setAlive} board = {this.props.board}/>, document.getElementById("top-bar"));
+		ReactDOM.render(<Game toggle = {this.setAlive} />, document.getElementById("top-bar"));
 		return (<div className={"cell " + this.state.life} id={this.props.id} onClick = {this.setAlive}></div>)
 	}
 
@@ -273,14 +288,13 @@ class Board extends React.Component {
 			height: 100,
 			width: 80,
 			size: 8000,
-			board: []
 		}
 	}
 
 
 	componentWillMount = () => {
 
-		var board = [];
+		board = [];
 		for (let x = 0; x < this.state.size; x++) {
 			board[x] = {
 				id: x,
@@ -300,7 +314,7 @@ class Board extends React.Component {
 		$("#board").css("height", height * 0.9 + 2 + "vh");
 		$("#board").css("width", width * 0.9 + 2 + "vw");
 
-		var board = [];
+		board = [];
 		for (let x = 0; x < size; x++) {
 			board[x] = {
 				id: x,
@@ -319,7 +333,7 @@ class Board extends React.Component {
 		ReactDOM.render(<Buttons change = {this.changeSize}/>, document.getElementById("size"));
 		return (
 			<div>{this.state.board.map((cell, i)=> {
-					return(<Cells id = {i} board = {this.state.board}/>);
+					return(<Cells id = {i} />);
 		})
 		}</div>);
 	}

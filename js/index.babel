@@ -1,240 +1,242 @@
 var board = [],
 	running = 0,
-	generation = 0;
+	generation = 0,
+	speed = 500,
+	controller;
+
+
+const living = (id) => {
+	var columns = 0,
+		count = 0,
+		border = 0;
+
+	if (board.length == 8000) {
+		columns = 80;
+	} else if (board.length == 8000) {
+		columns = 50;
+	} else {
+		columns = 30;
+	}
+
+	if (id == 0) {
+		border = 1;
+		if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
+			count++;
+		}
+		return count;
+	}
+
+	if (id == board.length - 1) {
+		border = 1;
+		if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+
+	if (id == board.length - columns) {
+		border = 1;
+		if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+
+	if (id == columns - 1) {
+		border = 1;
+		if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+
+
+	//Top border
+	if (id >= 0 && id <= (columns - 1)) {
+		border = 1;
+		if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+
+	//Bottom border
+	if (id >= (board.length - columns) && id <= (board.length - 1)) {
+		border = 1;
+		if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+
+	//Right border
+	if ((id + 1) % columns == 0) {
+		border = 1;
+		if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+
+	//Left border
+	if (id % columns == 0) {
+		border = 1;
+
+		if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+
+	//Normal
+	if (border == 0) {
+
+		if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
+			count++;
+		}
+		if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
+			count++;
+		}
+
+		return count;
+	}
+}
+
+const game = () => {
+	for (let x = 0; x < board.length; x++) {
+		const count = living(x);
+		if (board[x].status == "dead" && count == 3) {
+			board[x].status = "dead now alive";
+		}
+		if (board[x].status == "alive") {
+			if (count < 2 || count > 3) {
+				board[x].status = "alive now dead";
+			}
+		}
+
+	}
+
+	for (let x = 0; x < board.length; x++) {
+		if (board[x].status == "dead now alive") {
+			board[x].status = "alive";
+			document.getElementById(x).className = "cell " + "alive";
+		}
+		if (board[x].status == "alive now dead") {
+			board[x].status = "dead";
+			document.getElementById(x).className = "cell " + "dead";
+		}
+
+	}
+
+	generation++;
+	$("#generation").html(generation);
+}
 
 class Game extends React.Component {
-	living = (id) => {
-		var columns = 0,
-			count = 0,
-			border = 0;
 
-		if (board.length == 8000) {
-			columns = 80;
-		} else if (board.length == 8000) {
-			columns = 50;
-		} else {
-			columns = 30;
-		}
-
-		if (id == 0) {
-			border = 1;
-			if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
-				count++;
-			}
-			return count;
-		}
-
-		if (id == board.length - 1) {
-			border = 1;
-			if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-
-		if (id == board.length - columns) {
-			border = 1;
-			if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-
-		if (id == columns - 1) {
-			border = 1;
-			if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-
-
-		//Top border
-		if (id >= 0 && id <= (columns - 1)) {
-			border = 1;
-			if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-
-		//Bottom border
-		if (id >= (board.length - columns) && id <= (board.length - 1)) {
-			border = 1;
-			if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-
-		//Right border
-		if ((id + 1) % columns == 0) {
-			border = 1;
-			if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-
-		//Left border
-		if (id % columns == 0) {
-			border = 1;
-
-			if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-
-		//Normal
-		if (border == 0) {
-
-			if (board[id + 1].status == "alive" || board[id + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - 1].status == "alive" || board[id - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns].status == "alive" || board[id + columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns + 1].status == "alive" || board[id + columns + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id + columns - 1].status == "alive" || board[id + columns - 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns].status == "alive" || board[id - columns].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns + 1].status == "alive" || board[id - columns + 1].status == "alive now dead") {
-				count++;
-			}
-			if (board[id - columns - 1].status == "alive" || board[id - columns - 1].status == "alive now dead") {
-				count++;
-			}
-
-			return count;
-		}
-	}
-
-	game = () => {
-		for (let x = 0; x < board.length; x++) {
-			const count = this.living(x);
-			if (board[x].status == "dead" && count == 3) {
-				board[x].status = "dead now alive";
-				document.getElementById(x).className = "cell " + "change";
-			}
-			if (board[x].status == "alive") {
-				if (count < 2 || count > 3) {
-					board[x].status = "alive now dead";
-					document.getElementById(x).className = "cell " + "change";
-				}
-			}
-
-		}
-
-		for (let x = 0; x < board.length; x++) {
-			if (board[x].status == "dead now alive") {
-				board[x].status = "alive";
-				document.getElementById(x).className = "cell " + "alive";
-			}
-			if (board[x].status == "alive now dead") {
-				board[x].status = "dead";
-				document.getElementById(x).className = "cell " + "dead";
-			}
-
-		}
-
-		generation++;
-		$("#generation").html(generation);
-	}
 
 	render() {
-		var controller;
 		const play = () => {
 			if (running == 0) {
 				running = 1;
-				controller = setInterval(this.game, 500);
+				controller = setInterval(game, speed);
 			}
 
 		}
@@ -247,12 +249,12 @@ class Game extends React.Component {
 		const stop = () => {
 			running = 0;
 			clearInterval(controller);
+			generation = 0;
 			$("#generation").html("0");
 
 			for (let x = 0; x < board.length; x++) {
 				board[x].status = "dead";
 				document.getElementById(x).className = "cell " + "dead";
-
 
 			}
 		}
@@ -317,7 +319,21 @@ class Buttons extends React.Component {
 	}
 
 	render() {
-		return (<div><p>Board Size</p><button type="button" onClick = {this.changeSize} id = "5030">50 x 30</button><button type="button" onClick = {this.changeSize} id = "7050">70x50</button><button type="button" onClick = {this.changeSize} id = {10080}>100x80</button></div>)
+
+		const changeSpeed = (event) => {
+			speed = event.target.id;
+			if (running == 1) {
+				clearInterval(controller);
+
+				controller = setInterval(game, speed);
+			}
+		}
+		return (<div><div id="size" className="row">
+			<p>Board Size</p><button type="button" onClick = {this.changeSize} id = "5030">50 x 30</button><button type="button" onClick = {this.changeSize} id = "7050">70x50</button><button type="button" onClick = {this.changeSize} id = {10080}>100x80</button></div>
+			<div id="speed" className="row">
+				<p>Sim speed</p>
+				<button type="button" onClick = {changeSpeed} id = "1000">Slow</button><button type="button" onClick = {changeSpeed} id = "500">Medium</button><button type="button" onClick = {changeSpeed} id = "100">Fast</button>
+			</div></div>)
 	}
 }
 
@@ -368,7 +384,7 @@ class Board extends React.Component {
 	}
 	render() {
 
-		ReactDOM.render(<Buttons change = {this.changeSize}/>, document.getElementById("size"));
+		ReactDOM.render(<Buttons change = {this.changeSize}/>, document.getElementById("middle-bar"));
 		return (
 			<div>{this.state.board.map((cell, i)=> {
 					return(<Cells id = {i} />);

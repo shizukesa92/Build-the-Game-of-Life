@@ -295,6 +295,9 @@ class Cells extends React.Component {
 
 class Buttons extends React.Component {
 	changeSize = (event) => {
+		running = 0;
+		clearInterval(controller);
+
 		var height = 0,
 			width = 0,
 			size = 0;
